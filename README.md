@@ -1,0 +1,2 @@
+Bugsnag Notifier for Magento
+==
