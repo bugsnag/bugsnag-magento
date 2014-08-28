@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+  <sections>
+    <dev>
+      <groups>
+	<Bugsnaginc_Bugsnag>
+	  <label>Bugsnag</label>
+	  <sort_order>0</sort_order>
+	  <show_in_default>1</show_in_default>
+	  <show_in_website>1</show_in_website>
+	  <show_in_store>1</show_in_store>
+	  <fields>
+	    <api_key>
+              <label>Bugsnag API Key</label>
+              <frontend_type>text</frontend_type>
+              <sort_order>20</sort_order>
+              <show_in_default>1</show_in_default>
+              <show_in_website>1</show_in_website>
+              <show_in_store>1</show_in_store>
+            </api_key>
+	  </fields>
+	</Bugsnaginc_Bugsnag>
+      </groups>
+    </dev>
+  </sections>
+</config>
