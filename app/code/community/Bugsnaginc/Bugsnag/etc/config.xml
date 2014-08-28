@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+  <modules>
+    <Bugsnaginc_Bugsnag>
+      <version>0.0.1</version>
+    </Bugsnaginc_Bugsnag>
+  </modules>
+  <global>
+    <models>
+      <Bugsnaginc_Bugsnag>
+        <class>Bugsanginc_Bugsnag_Model</class>
+      </Bugsnaginc_Bugsnag>
+    </models>
+    <events>
+      <controller_action_predispatch>
+        <observers>
+          <bugsnag_controller_action_predispatch>
+            <type>singleton</type>
+            <class>Bugsnaginc_Bugsnag_Model_Observer</class>
+            <method>initBugsnag</method>
+          </bugsnag_controller_action_predispatch>
+        </observers>
+      </controller_action_predispatch>
+    </events>
+  </global>
+</config>
