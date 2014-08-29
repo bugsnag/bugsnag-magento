@@ -23,4 +23,15 @@
       </controller_action_predispatch>
     </events>
   </global>
+  <admin>
+    <routers>
+      <adminhtml>
+        <args>
+          <modules>
+            <Bungsnaginc_Bugsnag after="Mage_Adminhtml">Bugsnaginc_Bugsnag</Bungsnaginc_Bugsnag>
+          </modules>
+        </args>
+      </adminhtml>
+    </routers>
+  </admin>
 </config>
