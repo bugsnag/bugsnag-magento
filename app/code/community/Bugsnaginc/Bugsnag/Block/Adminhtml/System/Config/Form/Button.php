@@ -20,12 +20,17 @@ class Bugsnaginc_Bugsnag_Block_Adminhtml_System_Config_Form_Button extends Mage_
 
     public function getButtonHtml()
     {
-        $button = $this->getLayout()->createBlock('adminhtml/widget_button')
-            ->setData(array(
-            'id'        => 'bugsnagincbugsnag_button',
-            'label'     => $this->helper('adminhtml')->__('Fire Test Event'),
-            'onclick'   => 'javascript:check(); return false;'
-        ));
+        $button = $this
+            ->getLayout()
+            ->createBlock('adminhtml/widget_button')
+            ->setData(
+                array(
+                    'type'      => 'button',
+                    'id'        => 'Bugsnaginc_Bugsnag',
+                    'label'     => $this->helper('adminhtml')->__('Fire Test Event'),
+                    'onclick'   => 'javascript:fireTestEvent(); return false;'
+                )
+            );
 
         return $button->toHtml();
     }

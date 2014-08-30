@@ -1,13 +1,19 @@
 <script type="text/javascript">
  //<![CDATA[
- function check() {
+ function fireTestEvent() {
    new Ajax.Request('<?php echo $this->getAjaxCheckUrl() ?>', {
-     method:     'get',
-     onSuccess: function(transport){
-
-       if (transport.responseText){
+     parameters: {
+       apiKey: $('dev_Bugsnaginc_Bugsnag_apiKey').value,
+       severities: $('dev_Bugsnaginc_Bugsnag_severities').value,
+       filterFiels: $('dev_Bugsnaginc_Bugsnag_filterFields').value
+     },
+     onSuccess: function(transport) {
+       if (transport.responseText) {
          alert('Checked')
        }
+     },
+     onFailure: function(transport) {
+         alert('FAILED!!!!!');
      }
    });
  }
