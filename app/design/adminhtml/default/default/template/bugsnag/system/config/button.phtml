@@ -8,12 +8,10 @@
        filterFiels: $('dev_Bugsnaginc_Bugsnag_filterFields').value
      },
      onSuccess: function(transport) {
-       if (transport.responseText) {
-         alert('Checked')
-       }
+       alert('Sent notification. Visit https://bugsnag.com/ to see it in your dashboard');
      },
      onFailure: function(transport) {
-         alert('FAILED!!!!!');
+       alert("Couldn't send a notification. Double check your API key");
      }
    });
  }
