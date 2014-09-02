@@ -2,7 +2,6 @@
 
 class Bugsnaginc_Bugsnag_Model_Observer
 {
-    private static $COMPOSER_AUTOLOADER = "/vendor/autoload.php";
     private static $DEFAULT_NOTIFY_SEVERITIES = "fatal,error";
 
     private static $NOTIFIER = array(
@@ -27,9 +26,8 @@ class Bugsnaginc_Bugsnag_Model_Observer
 
     public function initBugsnag()
     {
-        // Require bugsnag-php
-        if (file_exists(Mage::getBaseDir() . self::$COMPOSER_AUTOLOADER)) {
-            require_once Mage::getBaseDir() . self::$COMPOSER_AUTOLOADER;
+        if (file_exists(Mage::getBaseDir('lib') . '/bugsnag-php/Autoload.php')) {
+            require_once(Mage::getBaseDir('lib') . '/bugsnag-php/Autoload.php');
         } else {
             error_log("Bugsnag Error: Couldn't activate Bugsnag Error Monitoring due to missing Bugsnag PHP library!");
             return;
