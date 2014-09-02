@@ -28,8 +28,12 @@ modman clone https://github.com/bugsnag/bugsnag-magento.git
 
 ### Manually
 
-Download [the Bugsnag Magento ZIP archive](https://github.com/bugsnag/bugsnag-magento/archive/master.zip).
-Extract it and copy the contents of the `src/` directory into your Magento project.
+```
+git clone https://github.com/bugsnag/bugsnag-magento.git
+cd bugsnag-magento
+./build.sh
+cp -R build/* your-magento-project
+```
 
 Configuration
 --
