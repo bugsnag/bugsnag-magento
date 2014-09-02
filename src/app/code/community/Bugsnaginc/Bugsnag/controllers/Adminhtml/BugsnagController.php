@@ -4,7 +4,7 @@ class Bugsnaginc_Bugsnag_Adminhtml_BugsnagController extends Mage_Adminhtml_Cont
 {
     private static $NOTIFIER = array(
         'name' => 'Bugsnag Magento (Official)',
-        'version' => '0.0.1',
+        'version' => '1.0.0',
         'url' => 'https://bugsnag.com/notifiers/magento'
     );
 
