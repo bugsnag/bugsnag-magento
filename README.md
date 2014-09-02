@@ -41,6 +41,9 @@ and find the Bugsnag entry.
 
 ![](/screenshot.png)
 
+If the orange button "Fire Test Event" is not visible, then go to System →
+Configuration → Developer → Template Settings and set `Allow Symlinks` to `Yes`.
+
 To do
 --
 
