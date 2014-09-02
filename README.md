@@ -18,7 +18,7 @@ You can always read about the plugin or download it from Magento Connect.
 Installation
 --
 
-### Modman (preferred)
+### Modman
 
 ```
 cd <your-magento-project>
@@ -29,10 +29,8 @@ modman clone https://github.com/bugsnag/bugsnag-magento.git
 ### Manual
 
 ```
-git clone https://github.com/bugsnag/bugsnag-magento.git
-cd bugsnag-magento
-./build.sh
-cp -R build/* your-magento-project
+git clone https://github.com/bugsnag/bugsnag-magento.gti
+cp -R src/* <your-magento-project>
 ```
 
 Configuration
