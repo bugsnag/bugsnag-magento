@@ -15,5 +15,18 @@ of Magento, but it's untested.
 
 You can always read about the plugin or download it from Magento Connect.
 
-How to install
+Installation
 --
+
+### Manually
+
+Download [the Bugsnag Magento ZIP archive](https://github.com/bugsnag/bugsnag-magento/archive/master.zip).
+Extract it and copy the contents of the `src/` directory into your Magento project.
+
+Configuration
+--
+
+In your Magento admin panel go to System → Configuration → Advanced → Developer
+and find the Bugsnag entry.
+
+![][/screenshot.png]
