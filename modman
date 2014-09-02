@@ -1,3 +1,3 @@
-src/app/code/local/community/Bugsnaginc/Bugsnag/                                          code
-src/app/design/adminhtml/default/default/template/bugsnag/system/config/button.phtml      button.phtml
-src/app/etc/modules/Bugsnaginc_Bugsnag.xml                                                Bugsnaginc_Bugsnag.xml
+src/app/code/community/Bugsnaginc/Bugsnag/                                             app/code/community/Bugsnaginc/Bugsnag/
+src/app/design/adminhtml/default/default/template/bugsnag/system/config/button.phtml   app/design/adminhtml/default/default/template/bugsnag/system/config/button.phtml
+src/app/etc/modules/Bugsnaginc_Bugsnag.xml                                             app/etc/modules/Bugsnaginc_Bugsnag.xml
