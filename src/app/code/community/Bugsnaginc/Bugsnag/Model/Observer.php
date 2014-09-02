@@ -16,6 +16,10 @@ class Bugsnaginc_Bugsnag_Model_Observer
     private $filterFields;
 
     public static function fireTestEvent($apiKey) {
+        if (strlen($apiKey)) {
+            throw new Exception("Invalid length of the API key");
+        }
+
         $client = new Bugsnag_Client($apiKey);
         $client->notifyError(
             "BugsnagTest",
