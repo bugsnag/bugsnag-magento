@@ -29,4 +29,4 @@ Configuration
 In your Magento admin panel go to System → Configuration → Advanced → Developer
 and find the Bugsnag entry.
 
-![][/screenshot.png]
+![](/screenshot.png)
