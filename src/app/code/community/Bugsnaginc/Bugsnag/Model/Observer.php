@@ -16,7 +16,7 @@ class Bugsnaginc_Bugsnag_Model_Observer
     private $filterFields;
 
     public static function fireTestEvent($apiKey) {
-        if (strlen($apiKey)) {
+        if (strlen($apiKey) != 32) {
             throw new Exception("Invalid length of the API key");
         }
 
