@@ -1,18 +1,18 @@
 {
-  "name": "bugsnag/bugsnag-magento",
-  "description": "Magento extension for bugsnag.com",
-  "license": "MIT",
-  "require": {
-    "bugsnag/bugsnag": "*",
-    "magento-hackathon/magento-composer-installer": "*"
+ "name": "bugsnag/bugsnag-magento",
+ "description": "Magento extension for bugsnag.com",
+ "license": "MIT",
+ "require": {
+  "bugsnag/bugsnag": "*",
+  "magento-hackathon/magento-composer-installer": "*"
  },
-  "repositories": [
-    {
-	  "type": "composer",
-      "url": "http://packages.firegento.com"
-	}
-  ],
-  "extra": {
-    "magento-root-dir": "."
+ "repositories": [
+  {
+   "type": "composer",
+   "url": "http://packages.firegento.com"
   }
+ ],
+ "extra": {
+  "magento-root-dir": "."
+ }
 }
