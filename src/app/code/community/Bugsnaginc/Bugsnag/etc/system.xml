@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+  <sections>
+    <dev>
+      <groups>
+	<Bugsnaginc_Bugsnag>
+	  <label>Bugsnag</label>
+	  <sort_order>0</sort_order>
+	  <show_in_default>1</show_in_default>
+	  <show_in_website>1</show_in_website>
+	  <show_in_store>1</show_in_store>
+	  <fields>
+	    <apiKey>
+              <label>Bugsnag API Key</label>
+              <frontend_type>text</frontend_type>
+              <sort_order>20</sort_order>
+              <show_in_default>1</show_in_default>
+              <show_in_website>1</show_in_website>
+              <show_in_store>1</show_in_store>
+            </apiKey>
+	    <severities>
+	      <label>Notify Bugsnag about</label>
+	      <frontend_type>select</frontend_type>
+              <source_model>Bugsnaginc_Bugsnag_Model_Severity</source_model>
+              <sort_order>40</sort_order>
+              <show_in_default>1</show_in_default>
+              <show_in_website>1</show_in_website>
+              <show_in_store>1</show_in_store>
+	    </severities>
+	    <filterFields>
+	      <label>
+		Bugsnag Field Filter. The information to remove from Bugsnag
+		reports, one per line. Use this if you want to ensure you don't
+		send sensitive data such as passwords, and credit card numbers
+		to our servers.
+	      </label>
+	      <frontend_type>textarea</frontend_type>
+              <sort_order>50</sort_order>
+              <show_in_default>1</show_in_default>
+              <show_in_website>1</show_in_website>
+              <show_in_store>1</show_in_store>
+	    </filterFields>
+	    <test_bugsnag>
+	      <label>Fire a test event to ensure that the API key is correct</label>
+	      <frontend_type>button</frontend_type>
+	      <frontend_model>Bugsnaginc_Bugsnag_Block_Adminhtml_System_Config_Form_Button</frontend_model>
+              <sort_order>60</sort_order>
+              <show_in_default>1</show_in_default>
+              <show_in_website>1</show_in_website>
+              <show_in_store>1</show_in_store>
+	    </test_bugsnag>
+	  </fields>
+	</Bugsnaginc_Bugsnag>
+      </groups>
+    </dev>
+  </sections>
+</config>
