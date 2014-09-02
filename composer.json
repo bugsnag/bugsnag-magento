@@ -1,5 +1,6 @@
 {
  "name": "bugsnag/bugsnag-magento",
+ "type":"magento-module",
  "description": "Magento extension for bugsnag.com",
  "license": "MIT",
  "require": {
