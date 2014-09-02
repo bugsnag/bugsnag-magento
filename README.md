@@ -38,3 +38,10 @@ In your Magento admin panel go to System → Configuration → Advanced → Deve
 and find the Bugsnag entry.
 
 ![](/screenshot.png)
+
+To do
+--
+
+* Magento 2 introduces a lot of
+[exciting changes](https://wiki.magento.com/display/MAGE2DOC/Module+Dependency+Declarations). Currently,
+we do not support them
