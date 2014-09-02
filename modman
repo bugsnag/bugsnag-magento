@@ -1,4 +1,4 @@
-src/app/code/community/Bugsnaginc/Bugsnag/            app/code/community/Bugsnaginc/Bugsnag/
-src/app/design/adminhtml/default/default/template/    app/design/adminhtml/default/default/template/
-src/app/etc/modules/Bugsnaginc_Bugsnag.xml            app/etc/modules/Bugsnaginc_Bugsnag.xml
-src/lib/bugsnag-php                                   lib/bugsnag-php
+src/app/code/community/Bugsnaginc/Bugsnag/                   app/code/community/Bugsnaginc/Bugsnag/
+src/app/design/adminhtml/default/default/template/bugsnag    app/design/adminhtml/default/default/template/bugsnag
+src/app/etc/modules/Bugsnaginc_Bugsnag.xml                   app/etc/modules/Bugsnaginc_Bugsnag.xml
+src/lib/bugsnag-php                                          lib/bugsnag-php
