@@ -18,6 +18,16 @@ You can always read about the plugin or download it from Magento Connect.
 Installation
 --
 
+### Modman (preferred)
+
+```
+cd <your-magento-project>
+modman init
+modman clone https://github.com/bugsnag/bugsnag-magento.git
+```
+
+### Manual
+
 ```
 git clone https://github.com/bugsnag/bugsnag-magento.git
 cd bugsnag-magento
