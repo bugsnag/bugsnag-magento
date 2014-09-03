@@ -29,7 +29,7 @@ modman clone https://github.com/bugsnag/bugsnag-magento.git
 ### Manual
 
 ```
-git clone https://github.com/bugsnag/bugsnag-magento.gti
+git clone https://github.com/bugsnag/bugsnag-magento.git
 cp -R src/* <your-magento-project>
 ```
 
