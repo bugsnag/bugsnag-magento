@@ -1,6 +1,6 @@
 <?php
 
-class Bugsnaginc_Bugsnag_Model_Severity
+class Bugsnag_Notifier_Model_Severity
 {
     public function toOptionArray()
     {

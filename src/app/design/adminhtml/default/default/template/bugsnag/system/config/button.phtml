@@ -3,9 +3,9 @@
  function fireTestEvent() {
    new Ajax.Request('<?php echo $this->getAjaxCheckUrl() ?>', {
      parameters: {
-       apiKey: $('dev_Bugsnaginc_Bugsnag_apiKey').value,
-       severities: $('dev_Bugsnaginc_Bugsnag_severities').value,
-       filterFiels: $('dev_Bugsnaginc_Bugsnag_filterFields').value
+       apiKey: $('dev_Bugsnag_Notifier_apiKey').value,
+       severities: $('dev_Bugsnag_Notifier_severities').value,
+       filterFiels: $('dev_Bugsnag_Notifier_filterFields').value
      },
      onSuccess: function(transport) {
        alert('Sent notification. Visit https://bugsnag.com/ to see it in your dashboard');

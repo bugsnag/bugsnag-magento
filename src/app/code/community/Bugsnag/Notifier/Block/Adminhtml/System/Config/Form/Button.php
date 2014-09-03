@@ -1,6 +1,6 @@
 <?php
 
-class Bugsnaginc_Bugsnag_Block_Adminhtml_System_Config_Form_Button extends Mage_Adminhtml_Block_System_Config_Form_Field
+class Bugsnag_Notifier_Block_Adminhtml_System_Config_Form_Button extends Mage_Adminhtml_Block_System_Config_Form_Field
 {
     protected function _construct()
     {
@@ -26,7 +26,7 @@ class Bugsnaginc_Bugsnag_Block_Adminhtml_System_Config_Form_Button extends Mage_
             ->setData(
                 array(
                     'type'      => 'button',
-                    'id'        => 'Bugsnaginc_Bugsnag',
+                    'id'        => 'Bugsnag_Notifier',
                     'label'     => $this->helper('adminhtml')->__('Fire Test Event'),
                     'onclick'   => 'javascript:fireTestEvent(); return false;'
                 )

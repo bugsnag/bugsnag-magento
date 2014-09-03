@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <config>
   <modules>
-    <Bugsnaginc_Bugsnag>
+    <Bugsnag_Notifier>
       <active>true</active>
       <codePool>community</codePool>
-    </Bugsnaginc_Bugsnag>
+    </Bugsnag_Notifier>
   </modules>
 </config>

@@ -1,4 +1,4 @@
-src/app/code/community/Bugsnaginc/Bugsnag/                                              app/code/community/Bugsnaginc/Bugsnag/
+src/app/code/community/Bugsnag/Notifier/                                                app/code/community/Bugsnag/Notifier/
 src/app/design/adminhtml/default/default/template/bugsnag/system/config/button.phtml    app/design/adminhtml/default/default/template/bugsnag/system/config/button.phtml
-src/app/etc/modules/Bugsnaginc_Bugsnag.xml                                              app/etc/modules/Bugsnaginc_Bugsnag.xml
+src/app/etc/modules/Bugsnag_Notifier.xml                                                app/etc/modules/Bugsnag_Notifier.xml
 src/lib/bugsnag-php                                                                     lib/bugsnag-php

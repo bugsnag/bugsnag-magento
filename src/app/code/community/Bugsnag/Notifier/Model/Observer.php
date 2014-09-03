@@ -1,6 +1,6 @@
 <?php
 
-class Bugsnaginc_Bugsnag_Model_Observer
+class Bugsnag_Notifier_Model_Observer
 {
     private static $DEFAULT_NOTIFY_SEVERITIES = "fatal,error";
 
@@ -37,9 +37,9 @@ class Bugsnaginc_Bugsnag_Model_Observer
             return;
         }
 
-        $this->apiKey = Mage::getStoreConfig("dev/Bugsnaginc_Bugsnag/apiKey");
-        $this->notifySeverities = Mage::getStoreConfig("dev/Bugsnaginc_Bugsnag/severites");
-        $this->filterFields = Mage::getStoreConfig("dev/Bugsnaginc_Bugsnag/filterFiels");
+        $this->apiKey = Mage::getStoreConfig("dev/Bugsnag_Notifier/apiKey");
+        $this->notifySeverities = Mage::getStoreConfig("dev/Bugsnag_Notifier/severites");
+        $this->filterFields = Mage::getStoreConfig("dev/Bugsnag_Notifier/filterFiels");
 
         // Activate the bugsnag client
         if (!empty($this->apiKey)) {

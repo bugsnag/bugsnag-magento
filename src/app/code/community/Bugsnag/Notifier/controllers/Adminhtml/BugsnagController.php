@@ -1,6 +1,6 @@
 <?php
 
-class Bugsnaginc_Bugsnag_Adminhtml_BugsnagController extends Mage_Adminhtml_Controller_Action
+class Bugsnag_Notifier_Adminhtml_BugsnagController extends Mage_Adminhtml_Controller_Action
 {
     private static $NOTIFIER = array(
         'name' => 'Bugsnag Magento (Official)',
@@ -10,7 +10,7 @@ class Bugsnaginc_Bugsnag_Adminhtml_BugsnagController extends Mage_Adminhtml_Cont
 
     public function checkAction()
     {
-        Bugsnaginc_Bugsnag_Model_Observer::fireTestEvent($_POST["apiKey"]);
+        Bugsnag_Notifier_Model_Observer::fireTestEvent($_POST["apiKey"]);
         $successCode = 1;
         Mage::app()->getResponse()->setBody($successCode);
     }
