@@ -36,12 +36,15 @@ Configuration
 --
 
 In your Magento admin panel go to System → Configuration → Advanced → Developer
-and find the Bugsnag entry.
+and find the Bugsnag entry. If you don't see the entry, then try to enable
+symlinks (described below).
 
 ![](/screenshot.png)
 
 If the orange button "Fire Test Event" is not visible, then go to System →
 Configuration → Developer → Template Settings and set `Allow Symlinks` to `Yes`.
+You can safely set it back to `No` if you don't need the button or if you worry
+about the potential security risks (the plugin will keep working).
 
 To do
 --
