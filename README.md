@@ -9,9 +9,8 @@ applications, helping you to understand and resolve them as fast as
 possible. Create a free account to start capturing errors from your
 applications.
 
-The Bugsnag Notifier for Magento supports Magento CE 1.9.0.1+, PHP 5.2+ and
-requires the cURL extension to be available in PHP. It may work on older version
-of Magento, but it's untested.
+The Bugsnag Notifier for Magento supports Magento CE 1.9.0.1+ and PHP 5.2+. It
+may work on older versions of Magento, but it's untested.
 
 You can always read about the plugin or download it from Magento Connect.
 
@@ -30,7 +29,7 @@ modman clone https://github.com/bugsnag/bugsnag-magento.git
 
 ```
 git clone https://github.com/bugsnag/bugsnag-magento.git
-cp -R src/* <your-magento-project>
+cp -R bugsnag-magento/src/* <your-magento-project>
 ```
 
 Configuration
