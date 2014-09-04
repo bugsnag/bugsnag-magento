@@ -36,8 +36,8 @@ Configuration
 --
 
 In your Magento admin panel go to System → Configuration → Advanced → Developer
-and find the Bugsnag entry. If you don't see the entry, then try to enable
-symlinks (described below).
+and find the Bugsnag entry. If you don't see the entry, just press `Save Config`:
+the command would refresh the cache and pick up Bugsnag.
 
 ![](/screenshot.png)
 
