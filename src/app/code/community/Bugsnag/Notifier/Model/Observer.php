@@ -51,9 +51,25 @@ class Bugsnag_Notifier_Model_Observer
 
             $this->client->setNotifier(self::$NOTIFIER);
 
+            if (Mage::getSingleton('customer/session')->isLoggedIn()) {
+                $this->addUserTab();
+            }
+
             set_error_handler(array($this->client, "errorHandler"));
             set_exception_handler(array($this->client, "exceptionHandler"));
         }
+    }
+
+    private function addUserTab()
+    {
+        $customer = Mage::getSingleton('customer/session')->getCustomer();
+        $this->client->setUser(array(
+            'id' => $customer->getId(),
+            'email' => $customer->getEmail(),
+            'created_at' => $customer->getCreatedAt(),
+            'first_name' => $customer->getFirstname(),
+            'last_name' => $customer->getLastname()
+        ));
     }
 
     private function releaseStage()
