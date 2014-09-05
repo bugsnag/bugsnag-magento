@@ -17,6 +17,10 @@ You can always read about the plugin or download it from Magento Connect.
 Installation
 --
 
+### Magento Connect (recommended way)
+
+TBA.
+
 ### Modman
 
 ```
