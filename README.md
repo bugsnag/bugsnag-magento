@@ -4,10 +4,10 @@ Bugsnag Notifier for Magento
 The Bugsnag Notifier for Magento gives you instant notification of errors in
 your Magento applications.
 
-Bugsnag captures errors in real-time from your web, mobile and desktop
-applications, helping you to understand and resolve them as fast as
-possible. Create a free account to start capturing errors from your
-applications.
+[Bugsnag](bugsnag.com) captures errors in real-time from your web, mobile and
+desktop applications, helping you to understand and resolve them as fast as
+possible. [Create a free account](bugsnag.com) to start capturing errors from
+your applications.
 
 The Bugsnag Notifier for Magento supports Magento CE 1.9.0.1+ and PHP 5.2+. It
 may work on older versions of Magento, but it's untested.
