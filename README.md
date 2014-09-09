@@ -29,6 +29,27 @@ modman init
 modman clone https://github.com/bugsnag/bugsnag-magento.git
 ```
 
+### Composer
+
+```
+{
+  "require": {
+    "magento/core": "1.9.0.1",
+    "bugsnag/bugsnag-magento": "dev-master",
+    "magento-hackathon/magento-composer-installer": "*"
+  },
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "http://packages.firegento.com"
+    }
+  ],
+  "extra":{
+    "magento-root-dir": "htdocs/"
+  }
+}
+```
+
 ### Manual
 
 ```
