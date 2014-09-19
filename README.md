@@ -19,7 +19,8 @@ Installation
 
 ### Magento Connect (recommended way)
 
-TBA.
+1. Visit [the module's page on Magento Connect](http://www.magentocommerce.com/magento-connect/catalog/product/view/id/24935/s/bugsnag-notifier/)
+1. Press "Install Now" and and follow the instructions.
 
 ### Modman
 
