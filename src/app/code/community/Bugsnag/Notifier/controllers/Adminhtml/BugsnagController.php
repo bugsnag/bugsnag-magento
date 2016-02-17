@@ -8,4 +8,9 @@ class Bugsnag_Notifier_Adminhtml_BugsnagController extends Mage_Adminhtml_Contro
         $successCode = 1;
         Mage::app()->getResponse()->setBody($successCode);
     }
+
+    public function _isAllowed()
+    {
+        return true;
+    }
 }
