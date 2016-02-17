@@ -3,12 +3,14 @@
 class Bugsnag_Configuration
 {
     public static $DEFAULT_TIMEOUT = 10;
+    public static $DEFAULT_ENDPOINT = 'https://notify.bugsnag.com';
+    public static $DEFAULT_NON_SSL_ENDPOINT = 'http://notify.bugsnag.com';
 
     public $apiKey;
     public $autoNotify = true;
     public $batchSending = true;
     public $useSSL = true;
-    public $endpoint = 'notify.bugsnag.com';
+    public $endpoint;
     public $notifyReleaseStages;
     public $filters = array('password');
     public $projectRoot;
@@ -16,9 +18,13 @@ class Bugsnag_Configuration
     public $proxySettings = array();
     public $notifier = array(
         'name'    => 'Bugsnag PHP (Official)',
-        'version' => '2.3.0',
-        'url'     => 'https://bugsnag.com'
+        'version' => '2.6.1',
+        'url'     => 'https://bugsnag.com',
     );
+    public $sendEnvironment = false;
+    public $sendCookies = true;
+    public $sendSession = true;
+    public $sendCode = true;
     public $stripPath;
     public $stripPathRegex;
 
@@ -33,6 +39,10 @@ class Bugsnag_Configuration
     public $beforeNotifyFunction;
     public $errorReportingLevel;
 
+    public $curlOptions = array();
+
+    public $debug = false;
+
     public function __construct()
     {
         $this->timeout = Bugsnag_Configuration::$DEFAULT_TIMEOUT;
@@ -40,7 +50,13 @@ class Bugsnag_Configuration
 
     public function getNotifyEndpoint()
     {
-        return $this->getProtocol()."://".$this->endpoint;
+        if (is_null($this->endpoint)) {
+            return $this->useSSL ? Bugsnag_Configuration::$DEFAULT_ENDPOINT : Bugsnag_Configuration::$DEFAULT_NON_SSL_ENDPOINT;
+        } elseif (preg_match('/^(http:\/\/|https:\/\/)/', $this->endpoint)) {
+            return $this->endpoint;
+        } else {
+            return ($this->useSSL ? "https" : "http")."://".$this->endpoint;
+        }
     }
 
     public function shouldNotify()
@@ -48,12 +64,21 @@ class Bugsnag_Configuration
         return is_null($this->notifyReleaseStages) || (is_array($this->notifyReleaseStages) && in_array($this->releaseStage, $this->notifyReleaseStages));
     }
 
+    public function shouldIgnoreErrorCode($code)
+    {
+        if (isset($this->errorReportingLevel)) {
+            return !($this->errorReportingLevel & $code);
+        } else {
+            return !(error_reporting() & $code);
+        }
+    }
+
     public function setProjectRoot($projectRoot)
     {
         $this->projectRoot = $projectRoot;
         $this->projectRootRegex = '/'.preg_quote($projectRoot, '/')."[\\/]?/i";
         if (is_null($this->stripPath)) {
-          $this->setStripPath($projectRoot);
+            $this->setStripPath($projectRoot);
         }
     }
 
@@ -63,7 +88,7 @@ class Bugsnag_Configuration
         $this->stripPathRegex = '/'.preg_quote($stripPath, '/')."[\\/]?/i";
     }
 
-    public function get($prop, $default=NULL)
+    public function get($prop, $default = null)
     {
         $configured = $this->$prop;
 
@@ -72,10 +97,5 @@ class Bugsnag_Configuration
         } else {
             return $configured ? $configured : $default;
         }
-    }
-
-    private function getProtocol()
-    {
-        return $this->useSSL ? "https" : "http";
     }
 }

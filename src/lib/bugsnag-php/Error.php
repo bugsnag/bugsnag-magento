@@ -5,22 +5,24 @@ class Bugsnag_Error
     private static $VALID_SEVERITIES = array(
         'error',
         'warning',
-        'info'
+        'info',
     );
 
     public $name;
     public $payloadVersion = "2";
     public $message;
     public $severity = "warning";
+    /** @var Bugsnag_Stacktrace */
     public $stacktrace;
     public $metaData = array();
     public $config;
     public $diagnostics;
-    public $code;
+    /** @var Bugsnag_Error|null */
     public $previous;
+    public $groupingHash;
 
     // Static error creation methods, to ensure that Error object is always complete
-    public static function fromPHPError(Bugsnag_Configuration $config, Bugsnag_Diagnostics $diagnostics, $code, $message, $file, $line, $fatal=false)
+    public static function fromPHPError(Bugsnag_Configuration $config, Bugsnag_Diagnostics $diagnostics, $code, $message, $file, $line, $fatal = false)
     {
         $error = new Bugsnag_Error($config, $diagnostics);
         $error->setPHPError($code, $message, $file, $line, $fatal);
@@ -28,15 +30,15 @@ class Bugsnag_Error
         return $error;
     }
 
-    public static function fromPHPException(Bugsnag_Configuration $config, Bugsnag_Diagnostics $diagnostics, Exception $exception)
+    public static function fromPHPThrowable(Bugsnag_Configuration $config, Bugsnag_Diagnostics $diagnostics, $throwable)
     {
         $error = new Bugsnag_Error($config, $diagnostics);
-        $error->setPHPException($exception);
+        $error->setPHPException($throwable);
 
         return $error;
     }
 
-    public static function fromNamedError(Bugsnag_Configuration $config, Bugsnag_Diagnostics $diagnostics, $name, $message=NULL)
+    public static function fromNamedError(Bugsnag_Configuration $config, Bugsnag_Diagnostics $diagnostics, $name, $message = null)
     {
         $error = new Bugsnag_Error($config, $diagnostics);
         $error->setName($name)
@@ -60,7 +62,6 @@ class Bugsnag_Error
         return $this;
     }
 
-
     public function setMessage($message)
     {
         $this->message = $message;
@@ -68,16 +69,16 @@ class Bugsnag_Error
         return $this;
     }
 
-    public function setStacktrace($stacktrace)
+    public function setGroupingHash($groupingHash)
     {
-        $this->stacktrace = $stacktrace;
+        $this->groupingHash = $groupingHash;
 
         return $this;
     }
 
-    public function setCode($code)
+    public function setStacktrace(Bugsnag_Stacktrace $stacktrace)
     {
-        $this->code = $code;
+        $this->stacktrace = $stacktrace;
 
         return $this;
     }
@@ -88,15 +89,27 @@ class Bugsnag_Error
             if (in_array($severity, Bugsnag_Error::$VALID_SEVERITIES)) {
                 $this->severity = $severity;
             } else {
-                error_log('Bugsnag Warning: Tried to set error severity to '. $severity .' which is not allowed.');
+                error_log('Bugsnag Warning: Tried to set error severity to '.$severity.' which is not allowed.');
             }
         }
 
         return $this;
     }
 
-    public function setPHPException(Exception $exception)
+    public function setPHPException($exception)
     {
+        if (version_compare(PHP_VERSION, '7.0.0', '>=')) {
+            if (!$exception instanceof \Throwable) {
+                error_log('Bugsnag Warning: Exception must implement interface \Throwable.');
+                return;
+            }
+        } else {
+            if (!$exception instanceof \Exception) {
+                error_log('Bugsnag Warning: Exception must be instance of \Exception.');
+                return;
+            }
+        }
+
         $this->setName(get_class($exception))
              ->setMessage($exception->getMessage())
              ->setStacktrace(Bugsnag_Stacktrace::fromBacktrace($this->config, $exception->getTrace(), $exception->getFile(), $exception->getLine()));
@@ -108,7 +121,7 @@ class Bugsnag_Error
         return $this;
     }
 
-    public function setPHPError($code, $message, $file, $line, $fatal=false)
+    public function setPHPError($code, $message, $file, $line, $fatal = false)
     {
         if ($fatal) {
             // Generating stacktrace for PHP fatal errors is not possible,
@@ -125,8 +138,7 @@ class Bugsnag_Error
         $this->setName(Bugsnag_ErrorTypes::getName($code))
              ->setMessage($message)
              ->setSeverity(Bugsnag_ErrorTypes::getSeverity($code))
-             ->setStacktrace($stacktrace)
-             ->setCode($code);
+             ->setStacktrace($stacktrace);
 
         return $this;
     }
@@ -143,29 +155,15 @@ class Bugsnag_Error
     public function setPrevious($exception)
     {
         if ($exception) {
-            $this->previous = Bugsnag_Error::fromPHPException($this->config, $this->diagnostics, $exception);
+            $this->previous = Bugsnag_Error::fromPHPThrowable($this->config, $this->diagnostics, $exception);
         }
 
         return $this;
     }
 
-    public function shouldIgnore()
-    {
-        // Check if we should ignore errors of this type
-        if (isset($this->code)) {
-            if (isset($this->config->errorReportingLevel)) {
-                return !($this->config->errorReportingLevel & $this->code);
-            } else {
-                return !(error_reporting() & $this->code);
-            }
-        }
-
-        return false;
-    }
-
     public function toArray()
     {
-        return array(
+        $errorArray = array(
             'app' => $this->diagnostics->getAppData(),
             'device' => $this->diagnostics->getDeviceData(),
             'user' => $this->diagnostics->getUser(),
@@ -173,8 +171,14 @@ class Bugsnag_Error
             'payloadVersion' => $this->payloadVersion,
             'severity' => $this->severity,
             'exceptions' => $this->exceptionArray(),
-            'metaData' => $this->cleanupObj($this->metaData)
+            'metaData' => $this->cleanupObj($this->metaData),
         );
+
+        if (isset($this->groupingHash)) {
+        	$errorArray['groupingHash'] = $this->groupingHash;
+        }
+
+        return $errorArray;
     }
 
     public function exceptionArray()
@@ -188,16 +192,16 @@ class Bugsnag_Error
         $exceptionArray[] = array(
             'errorClass' => $this->name,
             'message' => $this->message,
-            'stacktrace' => $this->stacktrace->toArray()
+            'stacktrace' => $this->stacktrace->toArray(),
         );
 
-        return $exceptionArray;
+        return $this->cleanupObj($exceptionArray);
     }
 
     private function cleanupObj($obj)
     {
-        if (empty($obj)) {
-            return NULL;
+        if (is_null($obj)) {
+            return null;
         }
 
         if (is_array($obj)) {
@@ -224,14 +228,14 @@ class Bugsnag_Error
             }
 
             return $cleanArray;
-        } else if (is_string($obj)) {
+        } elseif (is_string($obj)) {
             // UTF8-encode if not already encoded
-            if (!mb_detect_encoding($obj, 'UTF-8', true)) {
+            if (function_exists('mb_detect_encoding') && !mb_detect_encoding($obj, 'UTF-8', true)) {
                 return utf8_encode($obj);
             } else {
                 return $obj;
             }
-        } else if (is_object($obj)) {
+        } elseif (is_object($obj)) {
             // json_encode -> json_decode trick turns an object into an array
             return $this->cleanupObj(json_decode(json_encode($obj), true));
         } else {
