@@ -31,21 +31,9 @@ class Bugsnag_Request
             $requestData['request']['userAgent'] = $_SERVER['HTTP_USER_AGENT'];
         }
 
-        if (function_exists("getallheaders")) {
-            $headers = getallheaders();
-            if (!empty($headers)) {
-                $requestData['request']['headers'] = $headers;
-            }
-        }
-
-        // Session Tab
-        if (!empty($_SESSION)) {
-            $requestData['session'] = $_SESSION;
-        }
-
-        // Cookies Tab
-        if (!empty($_COOKIE)) {
-            $requestData['cookies'] = $_COOKIE;
+        $headers = self::getRequestHeaders();
+        if (!empty($headers)) {
+            $requestData['request']['headers'] = $headers;
         }
 
         return $requestData;
@@ -54,7 +42,7 @@ class Bugsnag_Request
     public static function getContext()
     {
         if (self::isRequest() && isset($_SERVER['REQUEST_METHOD']) && isset($_SERVER["REQUEST_URI"])) {
-            return $_SERVER['REQUEST_METHOD'] . ' ' . strtok($_SERVER["REQUEST_URI"], '?');
+            return $_SERVER['REQUEST_METHOD'].' '.strtok($_SERVER["REQUEST_URI"], '?');
         } else {
             return null;
         }
@@ -71,7 +59,7 @@ class Bugsnag_Request
 
     public static function getCurrentUrl()
     {
-        $schema = ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443) ? 'https://' : 'http://';
+        $schema = ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || (!empty($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == 443)) ? 'https://' : 'http://';
 
         return $schema.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
     }
@@ -79,5 +67,22 @@ class Bugsnag_Request
     public static function getRequestIp()
     {
         return isset($_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $_SERVER['REMOTE_ADDR'];
+    }
+
+    public static function getRequestHeaders()
+    {
+        if (function_exists('getallheaders')) {
+            return getallheaders();
+        }
+
+        $headers = array();
+
+        foreach ($_SERVER as $name => $value) {
+            if (substr($name, 0, 5) == 'HTTP_') {
+                $headers[str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5)))))] = $value;
+            }
+        }
+
+        return $headers;
     }
 }

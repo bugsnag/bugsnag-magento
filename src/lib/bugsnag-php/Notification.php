@@ -5,6 +5,7 @@ class Bugsnag_Notification
     private static $CONTENT_TYPE_HEADER = 'Content-type: application/json';
 
     private $config;
+    /** @var Bugsnag_Error[] */
     private $errorQueue = array();
 
     public function __construct(Bugsnag_Configuration $config)
@@ -12,11 +13,11 @@ class Bugsnag_Notification
         $this->config = $config;
     }
 
-    public function addError($error, $passedMetaData=array())
+    public function addError(Bugsnag_Error $error, $passedMetaData = array())
     {
         // Check if this error should be sent to Bugsnag
         if (!$this->config->shouldNotify()) {
-            return FALSE;
+            return false;
         }
 
         // Add global meta-data to error
@@ -27,8 +28,18 @@ class Bugsnag_Notification
             $error->setMetaData(Bugsnag_Request::getRequestMetaData());
         }
 
+        // Session Tab
+        if ($this->config->sendSession && !empty($_SESSION)) {
+            $error->setMetaData(array('session' => $_SESSION));
+        }
+
+        // Cookies Tab
+        if ($this->config->sendCookies && !empty($_COOKIE)) {
+            $error->setMetaData(array('cookies' => $_COOKIE));
+        }
+
         // Add environment meta-data to error
-        if (!empty($_ENV)) {
+        if ($this->config->sendEnvironment && !empty($_ENV)) {
             $error->setMetaData(array("Environment" => $_ENV));
         }
 
@@ -41,12 +52,12 @@ class Bugsnag_Notification
         }
 
         // Skip this error if the beforeNotify function returned FALSE
-        if (!isset($beforeNotifyReturn) || $beforeNotifyReturn !== FALSE) {
+        if (!isset($beforeNotifyReturn) || $beforeNotifyReturn !== false) {
             $this->errorQueue[] = $error;
 
-            return TRUE;
+            return true;
         } else {
-            return FALSE;
+            return false;
         }
     }
 
@@ -64,7 +75,7 @@ class Bugsnag_Notification
         return array(
             'apiKey' => $this->config->apiKey,
             'notifier' => $this->config->notifier,
-            'events' => $events
+            'events' => $events,
         );
     }
 
@@ -87,8 +98,10 @@ class Bugsnag_Notification
         // cURL supports both timeouts and proxies
         if (function_exists('curl_version')) {
             $this->postWithCurl($url, $body);
-        } else {
+        } elseif (ini_get('allow_url_fopen')) {
             $this->postWithFopen($url, $body);
+        } else {
+            error_log('Bugsnag Warning: Couldn\'t notify (neither cURL or allow_url_fopen are available on your PHP installation)');
         }
     }
 
@@ -105,7 +118,17 @@ class Bugsnag_Notification
         curl_setopt($http, CURLOPT_CONNECTTIMEOUT, $this->config->timeout);
         curl_setopt($http, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($http, CURLOPT_VERBOSE, false);
+        if (defined('HHVM_VERSION')) {
+            curl_setopt($http, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
+        } else {
+            curl_setopt($http, CURL_IPRESOLVE_V4, true);
+        }
 
+        if (!empty($this->config->curlOptions)) {
+            foreach ($this->config->curlOptions as $option => $value)  {
+                curl_setopt($http, $option, $value);
+            }
+        }
         // Apply proxy settings (if present)
         if (count($this->config->proxySettings)) {
             if (isset($this->config->proxySettings['host'])) {
@@ -115,8 +138,8 @@ class Bugsnag_Notification
                 curl_setopt($http, CURLOPT_PROXYPORT, $this->config->proxySettings['port']);
             }
             if (isset($this->config->proxySettings['user'])) {
-                $userPassword = $this->config->proxySettings['user'] . ':';
-                $userPassword .= isset($this->config->proxySettings['password'])? $this->config->proxySettings['password'] : '';
+                $userPassword = $this->config->proxySettings['user'].':';
+                $userPassword .= isset($this->config->proxySettings['password']) ? $this->config->proxySettings['password'] : '';
                 curl_setopt($http, CURLOPT_PROXYUSERPWD, $userPassword);
             }
         }
@@ -127,10 +150,15 @@ class Bugsnag_Notification
 
         if ($statusCode > 200) {
             error_log('Bugsnag Warning: Couldn\'t notify ('.$responseBody.')');
+
+            if($this->config->debug) {
+                error_log('Bugsnag Debug: Attempted to post to URL - "'.$url.'"');
+                error_log('Bugsnag Debug: Attempted to post payload - "'.$body.'"');
+            }
         }
 
         if (curl_errno($http)) {
-            error_log('Bugsnag Warning: Couldn\'t notify (' . curl_error($http).')');
+            error_log('Bugsnag Warning: Couldn\'t notify ('.curl_error($http).')');
         }
 
         curl_close($http);
@@ -143,21 +171,17 @@ class Bugsnag_Notification
             error_log('Bugsnag Warning: Can\'t use proxy settings unless cURL is installed');
         }
 
-        // Warn about lack of timeout support if we are using fopen()
-        if ($this->config->timeout != Bugsnag_Configuration::$DEFAULT_TIMEOUT) {
-            error_log('Bugsnag Warning: Can\'t change timeout settings unless cURL is installed');
-        }
-
         // Create the request context
         $context = stream_context_create(array(
             'http' => array(
                 'method' => 'POST',
                 'header' => Bugsnag_Notification::$CONTENT_TYPE_HEADER.'\r\n',
-                'content' => $body
+                'content' => $body,
+                'timeout' => $this->config->timeout
             ),
             'ssl' => array(
                 'verify_peer' => false,
-            )
+            ),
         ));
 
         // Execute the request and fetch the response
