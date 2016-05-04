@@ -15,7 +15,7 @@ class Bugsnag_Notifier_Model_Observer
     private $notifySeverities;
     private $filterFields;
 
-    public static function fireTestEvent($apiKey) {
+    public function fireTestEvent($apiKey) {
         if (strlen($apiKey) != 32) {
             throw new Exception("Invalid length of the API key");
         }
@@ -38,8 +38,8 @@ class Bugsnag_Notifier_Model_Observer
         }
 
         $this->apiKey = Mage::getStoreConfig("dev/Bugsnag_Notifier/apiKey");
-        $this->notifySeverities = Mage::getStoreConfig("dev/Bugsnag_Notifier/severites");
-        $this->filterFields = Mage::getStoreConfig("dev/Bugsnag_Notifier/filterFiels");
+        $this->notifySeverities = Mage::getStoreConfig("dev/Bugsnag_Notifier/severities");
+        $this->filterFields = Mage::getStoreConfig("dev/Bugsnag_Notifier/filterFields");
 
         // Activate the bugsnag client
         if (!empty($this->apiKey)) {

@@ -4,7 +4,8 @@ class Bugsnag_Notifier_Adminhtml_BugsnagController extends Mage_Adminhtml_Contro
 {
     public function checkAction()
     {
-        Bugsnag_Notifier_Model_Observer::fireTestEvent($_POST["apiKey"]);
+        $obs = Mage::getModel('Bugsnag_Notifier/Observer');
+        $obs->fireTestEvent($_POST["apiKey"]);
         $successCode = 1;
         Mage::app()->getResponse()->setBody($successCode);
     }
