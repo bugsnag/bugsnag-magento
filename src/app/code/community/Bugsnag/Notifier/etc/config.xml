@@ -8,7 +8,7 @@
   <global>
     <models>
       <Bugsnag_Notifier>
-        <class>Bugsang_Notifier_Model</class>
+        <class>Bugsnag_Notifier_Model</class>
       </Bugsnag_Notifier>
     </models>
     <events>
@@ -28,7 +28,7 @@
       <adminhtml>
         <args>
           <modules>
-            <Bungsnag_Notifier after="Mage_Adminhtml">Bugsnag_Notifier</Bungsnag_Notifier>
+            <Bugsnag_Notifier after="Mage_Adminhtml">Bugsnag_Notifier</Bugsnag_Notifier>
           </modules>
         </args>
       </adminhtml>
