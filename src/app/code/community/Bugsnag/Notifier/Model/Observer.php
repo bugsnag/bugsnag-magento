@@ -72,7 +72,7 @@ class Bugsnag_Notifier_Model_Observer
         ));
     }
 
-    private function releaseStage()
+    protected function releaseStage()
     {
         return Mage::getIsDeveloperMode() ? "development" : "production";
     }
