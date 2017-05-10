@@ -212,7 +212,7 @@ class Bugsnag_Error
                     // Check if this key should be filtered
                     $shouldFilter = false;
                     foreach ($this->config->filters as $filter) {
-                        if (strpos($key, $filter) !== false) {
+                        if (!empty($filter) && strpos($key, $filter) !== false) {
                             $shouldFilter = true;
                             break;
                         }
