@@ -458,7 +458,7 @@ class Bugsnag_Client
     {
         if (is_subclass_of($throwable, 'Throwable') || is_subclass_of($throwable, 'Exception') || get_class($throwable) == 'Exception') {
             $error = Bugsnag_Error::fromPHPThrowable($this->config, $this->diagnostics, $throwable);
-            $error->setSeverity($severity);
+            $error->setSeverity($severity, true);
 
             $this->notify($error, $metaData);
         }
@@ -475,7 +475,7 @@ class Bugsnag_Client
     public function notifyError($name, $message, array $metaData = null, $severity = null)
     {
         $error = Bugsnag_Error::fromNamedError($this->config, $this->diagnostics, $name, $message);
-        $error->setSeverity($severity);
+        $error->setSeverity($severity, true);
 
         $this->notify($error, $metaData);
     }
@@ -489,6 +489,12 @@ class Bugsnag_Client
 
         $error = Bugsnag_Error::fromPHPThrowable($this->config, $this->diagnostics, $throwable);
         $error->setSeverity("error");
+        $error->setHandledState([
+            'type' => 'middleware_handler',
+            'attributes' => [
+                'name' => 'magento'
+            ]
+        ]);
         $this->notify($error);
     }
 
@@ -500,6 +506,12 @@ class Bugsnag_Client
         }
 
         $error = Bugsnag_Error::fromPHPError($this->config, $this->diagnostics, $errno, $errstr, $errfile, $errline);
+        $error->setHandledState([
+            'type' => 'middleware_handler',
+            'attributes' => [
+                'name' => 'magento'
+            ]
+        ]);
         $this->notify($error);
     }
 
@@ -514,6 +526,12 @@ class Bugsnag_Client
         if (!is_null($lastError) && Bugsnag_ErrorTypes::isFatal($lastError['type']) && $this->config->autoNotify && !$this->config->shouldIgnoreErrorCode($lastError['type'])) {
             $error = Bugsnag_Error::fromPHPError($this->config, $this->diagnostics, $lastError['type'], $lastError['message'], $lastError['file'], $lastError['line'], true);
             $error->setSeverity("error");
+            $error->setHandledState([
+                'type' => 'middleware_handler',
+                'attributes' => [
+                    'name' => 'magento'
+                ]
+            ]);
             $this->notify($error);
         }
 

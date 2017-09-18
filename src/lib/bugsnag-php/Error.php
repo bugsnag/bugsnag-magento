@@ -20,6 +20,9 @@ class Bugsnag_Error
     /** @var Bugsnag_Error|null */
     public $previous;
     public $groupingHash;
+    public $defaultSeverity = true;
+    public $unhandled = false;
+    public $severityReason;
 
     // Static error creation methods, to ensure that Error object is always complete
     public static function fromPHPError(Bugsnag_Configuration $config, Bugsnag_Diagnostics $diagnostics, $code, $message, $file, $line, $fatal = false)
@@ -83,11 +86,18 @@ class Bugsnag_Error
         return $this;
     }
 
-    public function setSeverity($severity)
+    public function setHandledState($handledState)
+    {
+        $this->unhandled = true;
+        $this->severityReason = $handledState;
+    }
+
+    public function setSeverity($severity, $user=false)
     {
         if (!is_null($severity)) {
             if (in_array($severity, Bugsnag_Error::$VALID_SEVERITIES)) {
                 $this->severity = $severity;
+                $defaultSeverity = !$user;
             } else {
                 error_log('Bugsnag Warning: Tried to set error severity to '.$severity.' which is not allowed.');
             }
@@ -172,7 +182,13 @@ class Bugsnag_Error
             'severity' => $this->severity,
             'exceptions' => $this->exceptionArray(),
             'metaData' => $this->cleanupObj($this->metaData),
+            'unhandled' => $this->unhandled,
+            'defaultSeverity' => $this->defaultSeverity
         );
+
+        if ($this->unhandled && isset($this->severityReason)) {
+            $errorArray['severityReason'] = $this->severityReason;
+        }
 
         if (isset($this->groupingHash)) {
         	$errorArray['groupingHash'] = $this->groupingHash;
