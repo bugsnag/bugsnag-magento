@@ -1,6 +1,8 @@
 Bugsnag Notifier for Magento
 ==
 
+## Warning: This notifier has been deprecated and will only be receiving critical bug fixes in the future
+
 The Bugsnag Notifier for Magento gives you instant notification of errors in
 your Magento applications.
 
