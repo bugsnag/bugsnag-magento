@@ -63,13 +63,15 @@ class Bugsnag_Notifier_Model_Observer
     private function addUserTab()
     {
         $customer = Mage::getSingleton('customer/session')->getCustomer();
-        $this->client->setUser(array(
-            'id' => $customer->getId(),
-            'email' => $customer->getEmail(),
-            'created_at' => $customer->getCreatedAt(),
-            'first_name' => $customer->getFirstname(),
-            'last_name' => $customer->getLastname()
-        ));
+        if ($customer instanceof Mage_Customer_Model_Customer) {
+            $this->client->setUser(array(
+                'id' => $customer->getId(),
+                'email' => $customer->getEmail(),
+                'created_at' => $customer->getCreatedAt(),
+                'first_name' => $customer->getFirstname(),
+                'last_name' => $customer->getLastname()
+            ));
+        }
     }
 
     private function releaseStage()
